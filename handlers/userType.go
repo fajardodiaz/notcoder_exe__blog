@@ -27,6 +27,60 @@ func UserTypeCreate(c *fiber.Ctx) error {
 }
 
 func UserTypeGet(c *fiber.Ctx) error {
+	var usertype []models.UserType
+
+	database.Db.Find(&usertype)
+	return c.JSON(usertype)
+}
+
+func UserTypeGetByID(c *fiber.Ctx) error {
+	var usertype models.UserType
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"error": err,
+		})
+	}
+
+	database.Db.First(&usertype, id)
+
+	if usertype.ID == 0 {
+		c.Status(fiber.StatusNotFound)
+		return c.JSON(fiber.Map{
+			"message": "User not found",
+		})
+	}
+
+	return c.JSON(usertype)
+}
+
+func UserTypeDelete(c *fiber.Ctx) error {
+	var usertype models.UserType
+
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"error": err,
+		})
+	}
+
+	database.Db.First(&usertype, id)
+
+	if usertype.ID == 0 {
+		c.Status(fiber.StatusNotFound)
+		return c.JSON(fiber.Map{
+			"message": "User not found",
+		})
+	}
+
+	database.Db.Delete(&usertype, id)
+	return c.JSON(usertype)
+}
+
+func UserTypeUpdate(c *fiber.Ctx) error {
 
 	return nil
 }

@@ -39,7 +39,9 @@ func main() {
 	// Bind handlers
 	v1.Route("/usertype", func(router fiber.Router) {
 		router.Get("/", handlers.UserTypeGet)
+		router.Get("/:id", handlers.UserTypeGetByID)
 		router.Post("/", handlers.UserTypeCreate)
+		router.Delete("/:id", handlers.UserTypeDelete)
 	})
 
 	// Setup static files
