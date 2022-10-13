@@ -16,8 +16,10 @@ func UserTypeCreate(c *fiber.Ctx) error {
 		return err
 	}
 
-	database.InsertUserType(&usertype)
+	// GORM function to create a record
+	database.Db.Create(&usertype)
 
+	// Return a response to user
 	return c.JSON(fiber.Map{
 		"success": true,
 		"data":    &usertype,
