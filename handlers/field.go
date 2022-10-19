@@ -21,7 +21,7 @@ func FieldCreate(c *fiber.Ctx) error {
 }
 
 func FieldGet(c *fiber.Ctx) error {
-	var field = models.Field{}
+	var field []models.Field
 
 	database.Db.Find(&field)
 
