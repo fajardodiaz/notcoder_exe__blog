@@ -42,6 +42,12 @@ func main() {
 		router.Get("/:id", handlers.UserTypeGetByID)
 		router.Post("/", handlers.UserTypeCreate)
 		router.Delete("/:id", handlers.UserTypeDelete)
+		router.Put("/:id", handlers.UserTypeUpdate)
+	})
+
+	v1.Route("/field", func(router fiber.Router) {
+		router.Post("/", handlers.FieldCreate)
+		router.Get("/", handlers.FieldGet)
 	})
 
 	// Setup static files

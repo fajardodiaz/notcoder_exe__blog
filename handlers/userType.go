@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// UserCreate registers a user
+// UserTypeCreate UserCreate registers a user
 func UserTypeCreate(c *fiber.Ctx) error {
 
 	var usertype models.UserType
@@ -81,8 +81,20 @@ func UserTypeDelete(c *fiber.Ctx) error {
 }
 
 func UserTypeUpdate(c *fiber.Ctx) error {
+	var usertype models.UserType
 
-	return nil
+	if err := c.BodyParser(&usertype); err != nil {
+		return err
+	}
+
+	// GORM function to create a record
+	database.Db.Model(&models.UserType{}).Where("id = ?", c.Params("id")).Updates(models.UserType{Name: usertype.Name, LevelAccess: usertype.LevelAccess})
+
+	// Return a response to user
+	return c.JSON(fiber.Map{
+		"success": true,
+		"data":    &usertype,
+	})
 }
 
 // NotFound returns custom 404 page
